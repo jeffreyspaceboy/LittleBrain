@@ -14,6 +14,7 @@
 		6D2D042624CCFDF300E856B3 /* Shape.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6D2D042424CCFDF300E856B3 /* Shape.cpp */; };
 		6D2D042924CCFE7700E856B3 /* Cell.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6D2D042724CCFE7700E856B3 /* Cell.cpp */; };
 		6D2D042D24CCFEDE00E856B3 /* Activation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6D2D042B24CCFEDE00E856B3 /* Activation.cpp */; };
+		6D2D043024CD029300E856B3 /* Color_Detector_Example.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6D2D042F24CD029300E856B3 /* Color_Detector_Example.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -43,6 +44,7 @@
 		6D2D042824CCFE7700E856B3 /* Cell.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Cell.hpp; sourceTree = "<group>"; };
 		6D2D042B24CCFEDE00E856B3 /* Activation.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Activation.cpp; sourceTree = "<group>"; };
 		6D2D042C24CCFEDE00E856B3 /* Activation.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Activation.hpp; sourceTree = "<group>"; };
+		6D2D042F24CD029300E856B3 /* Color_Detector_Example.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Color_Detector_Example.cpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -86,6 +88,7 @@
 		6D2D041924CCFC7400E856B3 /* Neural_Network */ = {
 			isa = PBXGroup;
 			children = (
+				6D2D042E24CD025400E856B3 /* Examples */,
 				6D2D041B24CCFCA600E856B3 /* Neural_Network.hpp */,
 				6D2D041A24CCFCA600E856B3 /* Neural_Network.cpp */,
 				6D2D041E24CCFD3100E856B3 /* Neural_Layer.hpp */,
@@ -114,6 +117,14 @@
 				6D2D042B24CCFEDE00E856B3 /* Activation.cpp */,
 			);
 			path = Activation;
+			sourceTree = "<group>";
+		};
+		6D2D042E24CD025400E856B3 /* Examples */ = {
+			isa = PBXGroup;
+			children = (
+				6D2D042F24CD029300E856B3 /* Color_Detector_Example.cpp */,
+			);
+			path = Examples;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -179,6 +190,7 @@
 				6D2D042924CCFE7700E856B3 /* Cell.cpp in Sources */,
 				6D2D042D24CCFEDE00E856B3 /* Activation.cpp in Sources */,
 				6D2D042324CCFD8500E856B3 /* Tensor.cpp in Sources */,
+				6D2D043024CD029300E856B3 /* Color_Detector_Example.cpp in Sources */,
 				6D2D041C24CCFCA600E856B3 /* Neural_Network.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
