@@ -20,10 +20,10 @@ class Tensor{
     public:
         //---Constructors---//
         Tensor(void);
-        Tensor(std::vector<float> data, Shape shape);
-        Tensor(std::vector<float> data);
-        Tensor(float *data, Shape shape);
-        Tensor(Shape shape, bool randomize = false);
+        Tensor(std::vector<float> new_data, Shape shape);
+        Tensor(std::vector<float> new_data);
+        Tensor(float *new_data, Shape shape);
+        Tensor(Shape shape, bool do_randomize = false);
 
         //---Copy Constructors---//
         Tensor(const Tensor &obj);
@@ -31,8 +31,8 @@ class Tensor{
         ~Tensor(void);
 
         //---Set---//
-        void set_shape(Shape shape);
-        void set_data(std::vector<float> data, Shape shape);
+        void set_shape(Shape new_shape);
+        void set_data(std::vector<float> new_data, Shape shape);
         void set_data(float  data, Shape shape);
         void set_cell(float  data, Cell cell);
         void set_cell(float  data, unsigned int cell);
@@ -54,6 +54,7 @@ class Tensor{
         void add(float obj);
         void subtract(Tensor &obj);
         void subtract(float obj);
+        void matrix_product(Tensor &obj);
         void hadamard_product(Tensor &obj);
         void scalar_product(float obj);
 

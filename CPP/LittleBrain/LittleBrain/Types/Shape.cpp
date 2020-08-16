@@ -10,6 +10,7 @@
 
 //---Constructors---//
 Shape::Shape(){
+    dim.clear();
     size = 0;
     dim.push_back(0);
     dim.push_back(0);
@@ -17,6 +18,7 @@ Shape::Shape(){
 }
 
 Shape::Shape(unsigned int x_size, unsigned int y_size, unsigned int z_size){
+    dim.clear();
     size = x_size * y_size * z_size;
     dim.push_back(x_size);
     dim.push_back(y_size);

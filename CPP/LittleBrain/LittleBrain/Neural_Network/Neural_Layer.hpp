@@ -40,7 +40,7 @@ class Neural_Layer{
         Tensor inputsT;
     
         Tensor weights;
-        Tensor weightsT;
+        //Tensor weightsT;
         Tensor biases;
     
         Tensor outputs;

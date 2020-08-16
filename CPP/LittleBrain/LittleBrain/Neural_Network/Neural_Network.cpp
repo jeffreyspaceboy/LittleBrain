@@ -20,7 +20,7 @@ Neural_Network::Neural_Network(std::vector<unsigned int> neurons){
 
 Neural_Network::Neural_Network(std::string name){
     this->name = name;
-    this->get_file();
+    this->get_file(name);
 }
 
 
@@ -56,9 +56,7 @@ std::string Neural_Network::get_name(void){ return this->name; }
 
 
 //---File_Write---//
-void Neural_Network::save_file(void){ this->save_file(this->name); }
-
-void Neural_Network::save_file(std::string name){
+void Neural_Network::save_file(std::string file_path_name){
     /* File Format
         Array Containing Neruon Structure
         ~
@@ -72,34 +70,34 @@ void Neural_Network::save_file(std::string name){
         ...
     */
     std::ofstream file;
-    file.open(name);
+    file.open(file_path_name);
     if(!file.is_open()){
         printf("ERROR: File can not be opened.\n");
         exit(1);
     }
     unsigned int i,j;
-    for(i = 0; i < this->neurons.size(); i++){
-        file << this->neurons[i] << " ";
+    for(i = 0; i < neurons.size(); i++){
+        file << neurons[i] << " ";
     }
     file << "\n";
-    for(i = 0; i < this->layers.size(); i++){
+    for(i = 0; i < layers.size(); i++){
         file << "~\n" << i << " " << 0 <<" ";
-        Shape weights_shape(this->layers[i].weights.get_shape());
-        for(j = 0; j < sizeof(weights_shape.dim); j++){
+        Shape weights_shape(layers[i].weights.get_shape());
+        for(j = 0; j < weights_shape.dim.size(); j++){
             file << weights_shape.dim[j] << " ";
         }
         file << "\n";
         for(j = 0; j < weights_shape.size; j++){
-            file << this->layers[i].weights.get_cell(j)<<" ";
+            file << layers[i].weights.get_cell(j) <<" ";
         }
         file << "\n~\n" << i << " " << 1 <<" ";
-        Shape biases_shape(this->layers[i].biases.get_shape());
-        for(j = 0; j < sizeof(biases_shape.dim); j++){
+        Shape biases_shape(layers[i].biases.get_shape());
+        for(j = 0; j < biases_shape.dim.size(); j++){
             file << biases_shape.dim[j] << " ";
         }
         file << "\n";
         for(j = 0; j < biases_shape.size; j++){
-            file << this->layers[i].biases.get_cell(j)<<" ";
+            file << layers[i].biases.get_cell(j)<<" ";
         }
         file << "\n";
     }
@@ -108,21 +106,7 @@ void Neural_Network::save_file(std::string name){
 
 
 //---File_Read---//
-void Neural_Network::get_file(void){ this->get_file(this->name); }
-
-void Neural_Network::get_file(std::string name){
-//    int neuronsInFile = this->checkNumNodesInFile();
-//    if(neuronsInFile == 0){
-//        std::cout<<"WARNING: File data dimentions do not match this Neural Network."<<std::endl;
-//        std::cout<<"Would you like to override your current network? (y:n)"<<std::endl;
-//        char ans;
-//        std::cin >> ans;
-//        if(ans=='y' || ans=='Y'){
-//            this->layers.clear();
-//            this->neurons.clear();
-//            this->setupNetworkFromFile();
-//        }
-//    }
+void Neural_Network::get_file(std::string file_path_name){
     /* File Format
         Array Containing Neruon Structure
         ~
@@ -136,16 +120,28 @@ void Neural_Network::get_file(std::string name){
         ...
     */
     std::ifstream file;
-    file.open(name);
+    file.open(file_path_name);
     if(!file.is_open()){
         printf("ERROR: File can not be opened.\n");
         exit(1);
     }
+    printf("WARNING: Calling function get_file() will replace your current network.\n");
+    printf("PROMPT: Would you like to override your current network? (y:n) ");
+    char ans;
+    std::cin >> ans;
+    if(ans!='y' && ans!='Y'){
+        printf("STATUS: File get was cancelled\n");
+        file.close();
+        return;
+    }
+    printf("STATUS: Replacing Neural Network...\n");
+    neurons.clear();
+    layers.clear();
     unsigned int matrixInfo[5];
     std::string scannedValue;
     while(scannedValue != "\n"){
         std::getline(file, scannedValue, ' ');
-        neurons.push_back(std::stoi(scannedValue));
+        neurons.push_back(std::stoi(scannedValue)); //TODO: String to int
     }
     unsigned int i,j;
     while(!file.eof()){
@@ -153,18 +149,19 @@ void Neural_Network::get_file(std::string name){
         if(scannedValue == "~"){
             for(j = 0; j < 5; j++){
                 std::getline(file, scannedValue, ' ');
-                matrixInfo[j] = std::stoi(scannedValue);
+                matrixInfo[j] = std::stoi(scannedValue); //TODO: String to int
             }
             for(i = 0; i < (matrixInfo[2] * matrixInfo[3] * matrixInfo[4]); i++){
                 std::getline(file, scannedValue, ' ');
                 if(matrixInfo[1] == 0){
-                    this->layers[matrixInfo[0]].weights.set_cell(std::stod(scannedValue), i);
+                    layers[matrixInfo[0]].weights.set_cell(std::stod(scannedValue), i); //TODO: String to float
                 }else if(matrixInfo[1] == 1){
-                    this->layers[matrixInfo[0]].biases.set_cell(std::stod(scannedValue), i);
+                    layers[matrixInfo[0]].biases.set_cell(std::stod(scannedValue), i); //TODO: String to flaot
                 }
             }
         }
     }
+    file.close();
 }
 
 
@@ -233,7 +230,7 @@ void Neural_Network::train(Tensor input_data, Tensor target_data){
     }
     unsigned int x, i;
     unsigned long int k;
-    for(i = 0; i < training_runs; i++){
+    for(i = 0; i < training_runs; i++){ //TODO: Allow for replacement of cost function
         x = rand() % (input_data.get_shape().dim[2] - 1);
         Tensor trainingOutputs(this->feed_forward(input_data.get_matrix(x)));
         this->layers[this->layers.size()-1].outputError = (~target_data.get_matrix(x)) - trainingOutputs;
@@ -241,19 +238,49 @@ void Neural_Network::train(Tensor input_data, Tensor target_data){
         for(k = (this->layers.size() - 1); k > 0 ; k--){
             this->layers[k].gradient = this->layers[k].outputs;
             this->layers[k].gradient.dSigmoid();
-            this->layers[k].gradient = (this->layers[k].gradient ->* this->layers[k].outputError) * this->learning_rate;
+            this->layers[k].gradient.hadamard_product(this->layers[k].outputError);
+            this->layers[k].gradient.scalar_product(this->learning_rate);
             this->layers[k].inputsT = ~(this->layers[k].inputs);
-            Tensor delt(this->layers[k].gradient * this->layers[k].inputsT);
+            Tensor delt = this->layers[k].gradient * this->layers[k].inputsT;
             this->layers[k].set_weights_delta(delt);
-            this->layers[k].weights = this->layers[k].weights + this->layers[k].weightsDelta;
-            this->layers[k].biases = this->layers[k].biases + this->layers[k].gradient;
-            this->layers[k].weightsT = ~(this->layers[k].weights);
-            this->layers[k].inputError = this->layers[k].weightsT * this->layers[k].outputError;
-            this->layers[k-1].outputError = this->layers[k].inputError;
+            this->layers[k].weights.add(this->layers[k].weightsDelta);
+            this->layers[k].biases.add(this->layers[k].gradient);
+            this->layers[k-1].outputError = (~this->layers[k].weights) * this->layers[k].outputError;
             this->layers[k-1].outputs = this->layers[k].inputs;
         }
     }
 }
 
 
-
+void Neural_Network::print(void){
+    printf("[Neural Network]: ---%s---\n", name.c_str());
+    unsigned int i,j;
+    printf("Neural Layers: ");
+    for(i = 0; i < neurons.size(); i++){
+        printf("%d ",neurons[i]);
+    }
+    printf("\n");
+    for(i = 0; i < layers.size(); i++){
+        printf("************************************************\n");
+        Shape weights_shape(layers[i].weights.get_shape());
+        printf("---Layer:(%d)---Type:(Weights)---Shape:(%d",i,weights_shape.dim[0]);
+        for(j = 1; j < weights_shape.dim.size(); j++){
+            printf(",%d",weights_shape.dim[j]);
+        }
+        printf(")---\nData:{%f",layers[i].weights.get_cell(0));
+        for(j = 1; j < weights_shape.size; j++){
+            printf(", %f",layers[i].weights.get_cell(j));
+        }
+        Shape biases_shape(layers[i].biases.get_shape());
+        printf("}\n\n---Layer:(%d)---Type:(Biases)---Shape:(%d",i,biases_shape.dim[0]);
+        for(j = 1; j < biases_shape.dim.size(); j++){
+            printf(",%d",biases_shape.dim[j]);
+        }
+        printf(")---\nData:{%f",layers[i].biases.get_cell(0));
+        for(j = 1; j < biases_shape.size; j++){
+            printf(", %f",layers[i].biases.get_cell(j));
+        }
+        printf("}\n");
+    }
+    printf("************************************************\n\n");
+}

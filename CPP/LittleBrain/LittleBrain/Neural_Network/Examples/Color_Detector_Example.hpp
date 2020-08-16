@@ -1,5 +1,5 @@
 //
-//  Color_Detector_Example.cpp
+//  Color_Detector_Example.hpp
 //  LittleBrain
 //
 //  Created by Jeffrey Fisher on 7/25/20.
@@ -11,9 +11,14 @@
 #include "Neural_Network.hpp"
 
 int color_detector_example(){
-    std::vector<unsigned int> neural_layers = {3,8,6};
+    std::vector<unsigned int> neural_layers = {3,7,6};
     Neural_Network lilBrain(neural_layers);
-    lilBrain.set_name("lilBrain");
+    lilBrain.set_name("Example_Color_Detector");
+    
+    lilBrain.print();
+    lilBrain.get_file("/Users/jeffreyfisher/Documents/Projects/LittleBrain/CPP/LittleBrain/Example_Models/example_color_detector.txt");
+    lilBrain.print();
+    //lilBrain.save_file("/Users/jeffreyfisher/Documents/Projects/LittleBrain/CPP/LittleBrain/Example_Models/example_color_detector.txt");
     
     std::vector<float> training_inputs = { //Trainging input data.
         255,  0,  0  ,  252, 43, 43  ,  209, 47, 29  ,  207, 21,  0  ,  227, 37, 16, //RED
@@ -31,10 +36,10 @@ int color_detector_example(){
         0,0,0,0,1,0  ,  0,0,0,0,1,0  ,  0,0,0,0,1,0  ,  0,0,0,0,1,0  ,  0,0,0,0,1,0, //YELLOW
         0,0,0,0,0,1  ,  0,0,0,0,0,1  ,  0,0,0,0,0,1  ,  0,0,0,0,0,1  ,  0,0,0,0,0,1  //CYAN
     };
-    lilBrain.train(Tensor(training_inputs, Shape(3,1,30)),Tensor(training_targets, Shape(6,1,30)));
+    //lilBrain.train(Tensor(training_inputs, Shape(3,1,30)),Tensor(training_targets, Shape(6,1,30)));
     
     std::vector<float> test_input = {50, 120, 255};
-    lilBrain.predict(Tensor(test_input, Shape(3,1,1)));
+    //lilBrain.predict(Tensor(test_input, Shape(3,1,1)));
     
     printf("Color Detection Example: Complete\n");
     return 0;

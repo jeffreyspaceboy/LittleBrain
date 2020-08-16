@@ -20,7 +20,7 @@ Neural_Layer::Neural_Layer(const unsigned int numStartNodes, const unsigned int 
     //this->randomize(-1,1);
 
     this->inputsT = ~(this->inputs);
-    this->weightsT = ~(this->weights);
+    //this->weightsT = ~(this->weights);
     
     this->outputError = Tensor(Shape(1,numEndNodes));
     this->gradient = Tensor(Shape(1,numEndNodes));
@@ -38,7 +38,7 @@ Neural_Layer::Neural_Layer(const Neural_Layer &obj){
     this->outputs = obj.outputs;
 
     this->inputsT = obj.inputsT;
-    this->weightsT = obj.weightsT;
+    //this->weightsT = obj.weightsT;
 
     this->outputError = obj.outputError;
     this->gradient = obj.gradient;

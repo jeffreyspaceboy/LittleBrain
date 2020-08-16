@@ -1,2 +1,7 @@
 
 *.xcuserstate
+.DS_Store
+CPP/LittleBrain/.DS_Store
+CPP/.DS_Store
+*.pbxproj
+*.xcuserstate

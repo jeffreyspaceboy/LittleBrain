@@ -33,11 +33,10 @@ class Neural_Network{
     
     
         //---File_Write---//
-        void save_file(void);
-        void save_file(std::string name);
+        void save_file(std::string file_path_name);
+    
         //---File_Read---//
-        void get_file(void);
-        void get_file(std::string name);
+        void get_file(std::string file_path_name);
         void setup_from_file(void);
     
     
@@ -46,6 +45,9 @@ class Neural_Network{
         Tensor predict(Tensor input_data);
         //---Learn---//
         void train(Tensor input_data, Tensor target_data);
+    
+    void print(void);
+    
     
     private:
         //---Network_Structure---//
