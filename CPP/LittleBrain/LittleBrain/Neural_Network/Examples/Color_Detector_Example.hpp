@@ -8,10 +8,10 @@
 
 #include <iostream>
 
-#include "Neural_Network.hpp"
+#include "../Neural_Network.hpp"
 
 int color_detector_example(){
-    std::vector<unsigned int> neural_layers = {3,7,6};
+    std::vector<unsigned int> neural_layers = {2,7,2};
     Neural_Network lilBrain(neural_layers);
     lilBrain.set_name("Example_Color_Detector");
     

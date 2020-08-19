@@ -18,8 +18,8 @@ class Neural_Network{
     public:
         //---Constructors---//
         Neural_Network(void);
-        Neural_Network(std::vector<unsigned int> neurons);
-        Neural_Network(std::string name);
+        Neural_Network(std::vector<unsigned int> new_neurons);
+        Neural_Network(std::string new_name);
         //---Copy Constructors---//
         Neural_Network(const Neural_Network &obj);
         Neural_Network(const Neural_Network &obj, std::string new_name);
@@ -27,7 +27,7 @@ class Neural_Network{
         ~Neural_Network(void);
     
         //---Set---//
-        void set_name(std::string name);
+        void set_name(std::string new_name);
         //---Get---//
         std::string get_name(void);
     

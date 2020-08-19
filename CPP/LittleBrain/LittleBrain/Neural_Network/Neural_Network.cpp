@@ -11,25 +11,25 @@
 //---Constructors---//
 Neural_Network::Neural_Network(void){}
 
-Neural_Network::Neural_Network(std::vector<unsigned int> neurons){
-    this->neurons = neurons;
-    for(unsigned int i = 0; i < (this->neurons.size()-1); i++){
-        this->layers.push_back(Neural_Layer(this->neurons[i], this->neurons[i+1]));
+Neural_Network::Neural_Network(std::vector<unsigned int> new_neurons){
+    neurons = new_neurons;
+    for(unsigned int i = 0; i < (neurons.size()-1); i++){
+        layers.push_back(Neural_Layer(neurons[i], neurons[i+1]));
     }
 }
 
-Neural_Network::Neural_Network(std::string name){
-    this->name = name;
-    this->get_file(name);
+Neural_Network::Neural_Network(std::string new_name){
+    name = new_name;
+    get_file(name);
 }
 
 
 //---Copy Constructors---//
 Neural_Network::Neural_Network(const Neural_Network &obj){
-    this->name = ("Copy_of_" + obj.name);
-    this->neurons = obj.neurons;
-    for(int i=0; i < (this->neurons.size()-1) ; i++){
-        this->layers.push_back(Neural_Layer(this->neurons[i], this->neurons[i+1]));
+    name = ("Copy_of_" + obj.name);
+    neurons = obj.neurons;
+    for(int i=0; i < (neurons.size()-1) ; i++){
+        layers.push_back(Neural_Layer(neurons[i], neurons[i+1]));
     }
 }
 
@@ -49,7 +49,7 @@ Neural_Network::~Neural_Network(void){
 
 
 //---Set---//
-void Neural_Network::set_name(std::string name){ this->name = name; }
+void Neural_Network::set_name(std::string new_name){ name = new_name; }
 
 //---Get---//
 std::string Neural_Network::get_name(void){ return this->name; }
@@ -81,7 +81,7 @@ void Neural_Network::save_file(std::string file_path_name){
     }
     file << "\n";
     for(i = 0; i < layers.size(); i++){
-        file << "~\n" << i << " " << 0 <<" ";
+        file << "~ \n" << i << " " << 0 <<" ";
         Shape weights_shape(layers[i].weights.get_shape());
         for(j = 0; j < weights_shape.dim.size(); j++){
             file << weights_shape.dim[j] << " ";
@@ -90,7 +90,7 @@ void Neural_Network::save_file(std::string file_path_name){
         for(j = 0; j < weights_shape.size; j++){
             file << layers[i].weights.get_cell(j) <<" ";
         }
-        file << "\n~\n" << i << " " << 1 <<" ";
+        file << "\n~ \n" << i << " " << 1 <<" ";
         Shape biases_shape(layers[i].biases.get_shape());
         for(j = 0; j < biases_shape.dim.size(); j++){
             file << biases_shape.dim[j] << " ";
@@ -126,7 +126,9 @@ void Neural_Network::get_file(std::string file_path_name){
         exit(1);
     }
     printf("WARNING: Calling function get_file() will replace your current network.\n");
+    
     printf("PROMPT: Would you like to override your current network? (y:n) ");
+    /*
     char ans;
     std::cin >> ans;
     if(ans!='y' && ans!='Y'){
@@ -134,25 +136,26 @@ void Neural_Network::get_file(std::string file_path_name){
         file.close();
         return;
     }
+     */
     printf("STATUS: Replacing Neural Network...\n");
     neurons.clear();
     layers.clear();
     unsigned int matrixInfo[5];
     std::string scannedValue;
-    while(scannedValue != "\n"){
-        std::getline(file, scannedValue, ' ');
+    file >> scannedValue;
+    while(scannedValue != "\n" && scannedValue != "~"){
         neurons.push_back(std::stoi(scannedValue)); //TODO: String to int
+        file >> scannedValue;
     }
-    unsigned int i,j;
-    while(!file.eof()){
-        std::getline(file, scannedValue);
+    unsigned int i,j,k;
+    for(k = 0; k < neurons.size()-1; k++){
         if(scannedValue == "~"){
             for(j = 0; j < 5; j++){
-                std::getline(file, scannedValue, ' ');
+                file >> scannedValue;
                 matrixInfo[j] = std::stoi(scannedValue); //TODO: String to int
             }
             for(i = 0; i < (matrixInfo[2] * matrixInfo[3] * matrixInfo[4]); i++){
-                std::getline(file, scannedValue, ' ');
+                file >> scannedValue;
                 if(matrixInfo[1] == 0){
                     layers[matrixInfo[0]].weights.set_cell(std::stod(scannedValue), i); //TODO: String to float
                 }else if(matrixInfo[1] == 1){

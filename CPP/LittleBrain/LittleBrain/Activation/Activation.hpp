@@ -12,7 +12,7 @@
 #include <stdio.h>
 #include <math.h>
 
-#include "Cell.hpp"
+#include "../Types/Cell.hpp"
 
 float singleSigmoid(float val, Cell cell);
 float singleDSigmoid(float val, Cell cell);

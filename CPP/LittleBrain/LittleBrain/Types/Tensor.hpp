@@ -14,7 +14,7 @@
 
 #include "Cell.hpp"
 #include "Shape.hpp"
-#include "Activation.hpp"
+#include "../Activation/Activation.hpp"
 
 class Tensor{
     public:

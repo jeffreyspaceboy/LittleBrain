@@ -9,7 +9,7 @@
 #ifndef Neural_Layer_hpp
 #define Neural_Layer_hpp
 
-#include "Tensor.hpp"
+#include "../Types/Tensor.hpp"
 
 class Neural_Layer{
     public:
